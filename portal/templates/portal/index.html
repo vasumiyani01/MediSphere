@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSphere | AI-Powered Smart Healthcare Ecosystem</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- React, ReactDOM, and Babel Standalone CDNs -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Embedded CSS Styling System (Midnight Black-Blue theme) -->
+    <style>
+        :root {
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-display: 'Outfit', var(--font-sans);
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-radius-sm: 8px;
+            --border-radius-md: 12px;
+            --border-radius-lg: 20px;
+            --border-radius-full: 9999px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-glow: 0 0 25px rgba(59, 130, 246, 0.18);
+        }
+
+        :root,
+        [data-theme="dark"] {
+            --bg-primary: #070b13;
+            --bg-secondary: #0c1220;
+            --bg-tertiary: #141b2d;
+            --bg-glass: rgba(12, 18, 32, 0.75);
+            --border-color: rgba(30, 41, 59, 0.7);
+            --border-focus: #3b82f6;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #475569;
+            --color-primary: #3b82f6;
+            --color-primary-hover: #60a5fa;
+            --color-primary-glow: rgba(59, 130, 246, 0.25);
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.05);
+            --scrollbar-track: #070b13;
+            --scrollbar-thumb: #1e293b;
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --bg-tertiary: #f1f5f9;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --border-color: #cbd5e1;
+            --border-focus: #2563eb;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --color-primary: #2563eb;
+            --color-primary-hover: #1d4ed8;
+            --color-primary-glow: rgba(37, 99, 235, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.4);
+            --scrollbar-track: #f1f5f9;
+            --scrollbar-thumb: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color var(--transition-normal), color var(--transition-normal);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--scrollbar-track);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-thumb);
+            border-radius: var(--border-radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+
+        .glass {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--text-primary) 30%, var(--color-primary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gradient-blue-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        input,
+        select {
+            background-color: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 12px 16px;
+            border-radius: var(--border-radius-md);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            outline: none;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--border-focus);
+            box-shadow: 0 0 0 2px var(--color-primary-glow);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: var(--border-radius-md);
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-fast);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--color-primary);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--color-primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--color-primary-glow);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--color-primary);
+        }
+
+        .btn-ghost {
+            background-color: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-ghost:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: 24px;
+            transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--hover-color, var(--color-primary));
+            box-shadow: var(--hover-glow, var(--shadow-glow));
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: var(--border-radius-full);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-primary {
+            background-color: var(--color-primary-glow);
+            color: var(--color-primary);
+        }
+
+        .badge-success {
+            background-color: rgba(16, 185, 129, 0.15);
+            color: var(--color-success);
+        }
+
+        .badge-warning {
+            background-color: rgba(245, 158, 11, 0.15);
+            color: var(--color-warning);
+        }
+
+        .badge-danger {
+            background-color: rgba(239, 68, 68, 0.15);
+            color: var(--color-danger);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+            }
+
+            50% {
+                box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
+            }
+        }
+
+        .pulse-glow {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(12, 18, 32, 0.8) 0%, rgba(7, 11, 19, 0.9) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+        }
+
+        .hero-banner:hover {
+            border-color: var(--color-primary) !important;
+            box-shadow: var(--shadow-glow) !important;
+        }
+
+        [data-theme="light"] .hero-banner {
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.9) 0%, rgba(219, 234, 254, 0.9) 100%);
+            border: 1px solid rgba(37, 99, 235, 0.25);
+        }
+
+        [data-theme="light"] .hero-banner:hover {
+            border-color: var(--color-primary) !important;
+            box-shadow: 0 0 25px rgba(37, 99, 235, 0.15) !important;
+        }
+
+        .social-icon {
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: color var(--transition-fast), transform var(--transition-fast);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-2px);
+        }
+
+        .social-icon.whatsapp:hover {
+            color: #25D366 !important;
+        }
+
+        .social-icon.instagram:hover {
+            color: #E1306C !important;
+        }
+
+        .social-icon.x-logo:hover {
+            color: var(--text-primary) !important;
+        }
+
+        .social-icon.facebook:hover {
+            color: #1877F2 !important;
+        }
+
+        .desktop-only button,
+        .desktop-nav button {
+            transition: transform var(--transition-fast), color var(--transition-fast) !important;
+        }
+
+        .desktop-only button:hover,
+        .desktop-nav button:hover {
+            transform: translateY(-2px) !important;
+        }
+
+
+
+        .card.stat-card:hover {
+            border-color: var(--hover-color) !important;
+            box-shadow: var(--hover-glow) !important;
+        }
+
+        .theme-slider {
+            padding-top: 12px !important;
+        }
+
+        /* Theme-colored scrollbars for explore sliders */
+        .theme-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .theme-slider::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+            border-radius: 4px;
+        }
+
+        .theme-slider::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.25);
+            border-radius: 4px;
+        }
+
+        .theme-slider::-webkit-scrollbar-thumb:hover {
+            background: var(--slider-color, var(--color-primary));
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <!-- React Application Component Scripts -->
+    {% verbatim %}
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        // --- COMPONENT: FOOTERLINK ---
+        function FooterLink({ href, label, hoverColor, onClick }) {
+            const [hover, setHover] = useState(false);
+            return (
+                <a
+                    href={href}
+                    onClick={onClick}
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    style={{
+                        textDecoration: 'none',
+                        color: hover ? hoverColor : 'var(--text-secondary)',
+                        fontSize: '13px',
+                        transition: 'color 0.2s ease'
+                    }}
+                >
+                    {label}
+                </a>
+            );
+        }
+
+        // --- INLINE SVG ICONS (Lucide Alternatives) ---
+        const HeartPulseIcon = ({ size = 20, className = "" }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                <path d="M3.22 12H9.5l1.5-3 2 6 1.5-3h4.78" />
+            </svg>
+        );
+
+        const SunIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+            </svg>
+        );
+
+        const MoonIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+            </svg>
+        );
+
+        const LogInIcon = ({ size = 16 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3" />
+            </svg>
+        );
+
+        const SearchIcon = ({ size = 18, className = "", style = {} }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} style={style}>
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+            </svg>
+        );
+
+        const PillIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" /><path d="m8.5 8.5 7 7" />
+            </svg>
+        );
+
+        const UsersIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+        );
+
+        const MapPinIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" />
+            </svg>
+        );
+
+        const BuildingIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="16" height="20" x="4" y="2" rx="2" ry="2" /><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01" />
+            </svg>
+        );
+
+        const ArrowRightIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+        );
+
+        const ShieldAlertIcon = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><line x1="12" x2="12" y1="8" y2="12" /><line x1="12" x2="12.01" y1="16" y2="16" />
+            </svg>
+        );
+
+        const ShieldCheckIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="m9 11 2 2 4-4" />
+            </svg>
+        );
+
+        const PhoneIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+            </svg>
+        );
+
+        const ClockIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+            </svg>
+        );
+
+        const TruckIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="1" y="3" width="15" height="13" rx="2" ry="2" /><polygon points="16 8 20 8 23 11 23 16 16 16" /><circle cx="5.5" cy="18.5" r="2.5" /><circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+        );
+
+        const StarIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+        );
+
+        const CalendarIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" />
+            </svg>
+        );
+
+        const AwardIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="8" r="7" /><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+            </svg>
+        );
+
+        const DollarSignIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" x2="12" y1="1" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+        );
+
+        const ShoppingBagIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" x2="21" y1="6" y2="6" /><path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+        );
+
+        const ExternalLinkIcon = ({ size = 14 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+            </svg>
+        );
+
+        const XIcon = ({ size = 18 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" x2="6" y1="6" y2="18" /><line x1="6" x2="18" y1="6" y2="18" />
+            </svg>
+        );
+
+        const MenuIcon = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" />
+            </svg>
+        );
+
+        // --- COMPONENT: NAVBUTTON ---
+        function NavButton({ item, isActive, activeColor, onClick, buttonRef }) {
+            const [hover, setHover] = useState(false);
+
+            const textColor = isActive
+                ? activeColor
+                : hover
+                    ? (item.id === 'home' || item.id === 'about' ? 'var(--color-primary)' :
+                        item.id === 'medicines' ? '#3b82f6' :
+                            item.id === 'diseases' ? '#ef4444' :
+                                item.id === 'pharmacies' ? '#f59e0b' :
+                                    item.id === 'doctors' ? '#10b981' :
+                                        item.id === 'clinics' ? '#a855f7' :
+                                            'var(--text-primary)')
+                    : 'var(--text-secondary)';
+
+            return (
+                <button
+                    ref={buttonRef}
+                    onClick={onClick}
+                    onMouseEnter={() => setHover(true)}
+                    onMouseLeave={() => setHover(false)}
+                    className="btn-ghost"
+                    style={{
+                        padding: '8px 16px',
+                        borderRadius: '8px',
+                        fontSize: '14px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        border: 'none',
+                        background: 'transparent',
+                        color: textColor,
+                        transition: 'color 0.2s ease',
+                        position: 'relative'
+                    }}
+                >
+                    {item.label}
+                </button>
+            );
+        }
+
+
+        // --- COMPONENT: NAVBAR ---
+        function Navbar({ activeTab, setActiveTab, theme, toggleTheme, openLogin, scrollToSection, pincode, openPincode }) {
+            const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+            const buttonRefs = useRef({});
+            const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0, opacity: 0, backgroundColor: 'transparent' });
+
+            const navItems = [
+                { id: 'home', label: 'Home' },
+                { id: 'medicines', label: 'Medicines', sectionId: 'section-medicines' },
+                { id: 'diseases', label: 'Diseases', sectionId: 'section-diseases' },
+                { id: 'pharmacies', label: 'Pharmacies', sectionId: 'section-pharmacies' },
+                { id: 'doctors', label: 'Doctors', sectionId: 'section-doctors' },
+                { id: 'clinics', label: 'Clinics', sectionId: 'section-clinics' },
+                { id: 'about', label: 'Contact Us' }
+            ];
+
+            const getThemeColor = (tabId) => {
+                switch (tabId) {
+                    case 'home':
+                    case 'about':
+                        return 'var(--color-primary)';
+                    case 'medicines':
+                        return '#3b82f6';
+                    case 'diseases':
+                        return '#ef4444';
+                    case 'pharmacies':
+                        return '#f59e0b';
+                    case 'doctors':
+                        return '#10b981';
+                    case 'clinics':
+                        return '#a855f7';
+                    default:
+                        return 'var(--color-primary)';
+                }
+            };
+
+            const activeColor = getThemeColor(activeTab);
+
+            useEffect(() => {
+                const activeBtn = buttonRefs.current[activeTab];
+                if (activeBtn) {
+                    const left = activeBtn.offsetLeft + 16;
+                    const width = activeBtn.clientWidth - 32;
+                    setUnderlineStyle({
+                        left: left,
+                        width: width,
+                        opacity: 1,
+                        backgroundColor: activeColor
+                    });
+                } else {
+                    setUnderlineStyle(prev => ({ ...prev, opacity: 0 }));
+                }
+            }, [activeTab, activeColor]);
+
+
+
+            return (
+                <nav className="glass" style={{
+                    position: 'sticky', top: 0, zIndex: 100,
+                    borderBottom: 'var(--glass-border)', padding: '0 24px', height: '74px',
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    transition: 'background var(--transition-normal)'
+                }}>
+                    {/* Logo */}
+                    <div onClick={() => {
+                        setActiveTab('home');
+                        setMobileMenuOpen(false);
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                        <div style={{
+                            background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                            width: '40px', height: '40px', borderRadius: '10px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)',
+                        }}>
+                            <HeartPulseIcon size={24} />
+                        </div>
+                        <span style={{
+                            fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '22px',
+                            letterSpacing: '-0.02em',
+                            background: 'linear-gradient(135deg, var(--text-primary) 30%, #3b82f6 100%)',
+                            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                        }}>
+                            MediSphere
+                        </span>
+                    </div>
+
+                    {/* Nav Items (Desktop) */}
+                    <div className="desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '8px', position: 'relative' }}>
+                        {navItems.map(item => (
+                            <NavButton
+                                key={item.id}
+                                item={item}
+                                isActive={activeTab === item.id}
+                                activeColor={activeColor}
+                                buttonRef={el => buttonRefs.current[item.id] = el}
+                                onClick={() => {
+                                    if (item.id === 'home') {
+                                        setActiveTab('home');
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    } else if (item.id === 'about') {
+                                        setActiveTab('about');
+                                        const footer = document.querySelector('footer');
+                                        if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+                                    } else if (item.sectionId) {
+                                        scrollToSection(item.sectionId, item.id);
+                                    } else {
+                                        setActiveTab(item.id);
+                                    }
+                                }}
+                            />
+                        ))}
+                        {/* Animated sliding line */}
+                        <div
+                            style={{
+                                position: 'absolute',
+                                bottom: '2px',
+                                height: '2px',
+                                borderRadius: '2px',
+                                transition: 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, opacity 0.2s ease',
+                                pointerEvents: 'none',
+                                ...underlineStyle
+                            }}
+                        />
+                    </div>
+
+                    {/* Controls (Desktop) */}
+                    <div className="desktop-only" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        {/* Pincode Selector */}
+                        <div
+                            onClick={openPincode}
+                            style={{
+                                position: 'relative',
+                                display: 'flex',
+                                alignItems: 'center',
+                                background: 'var(--bg-tertiary)',
+                                border: '1px solid var(--border-color)',
+                                borderRadius: '10px',
+                                padding: '0 12px',
+                                height: '40px',
+                                cursor: 'pointer',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <MapPinIcon size={16} style={{ color: 'var(--color-primary)', marginRight: '6px', flexShrink: 0 }} />
+                            <span style={{
+                                color: pincode ? 'var(--text-primary)' : 'var(--text-secondary)',
+                                fontSize: '13px',
+                                fontWeight: 600
+                            }}>
+                                {pincode ? pincode : 'Pincode'}
+                            </span>
+                        </div>
+                        <button onClick={toggleTheme} className="btn-secondary" style={{
+                            width: '40px', height: '40px', padding: 0, borderRadius: '10px',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+                        </button>
+                        <button onClick={openLogin} className="btn btn-primary" style={{
+                            height: '40px', display: 'flex', alignItems: 'center', gap: '8px',
+                            padding: '0 20px', borderRadius: '10px'
+                        }}>
+                            <LogInIcon />
+                            <span>Login</span>
+                        </button>
+                    </div>
+
+                    {/* Mobile Menu Trigger */}
+                    <div className="mobile-menu-btn" style={{ display: 'none' }}>
+                        <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="btn-secondary" style={{ width: '40px', height: '40px', padding: 0 }}>
+                            {mobileMenuOpen ? <XIcon /> : <MenuIcon />}
+                        </button>
+                    </div>
+
+                    {/* Mobile Menu Panel */}
+                    {mobileMenuOpen && (
+                        <div className="glass" style={{
+                            position: 'absolute', top: '74px', left: 0, right: 0,
+                            borderBottom: 'var(--glass-border)', padding: '20px',
+                            display: 'flex', flexDirection: 'column', gap: '16px', zIndex: 99
+                        }}>
+                            {navItems.map(item => {
+                                const isActive = activeTab === item.id;
+                                const itemColor = getThemeColor(item.id);
+                                return (
+                                    <button key={item.id} onClick={() => {
+                                        if (item.id === 'home') {
+                                            setActiveTab('home');
+                                            setMobileMenuOpen(false);
+                                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        } else if (item.id === 'about') {
+                                            setActiveTab('about');
+                                            setMobileMenuOpen(false);
+                                            const footer = document.querySelector('footer');
+                                            if (footer) footer.scrollIntoView({ behavior: 'smooth' });
+                                        } else if (item.sectionId) {
+                                            setMobileMenuOpen(false);
+                                            scrollToSection(item.sectionId, item.id);
+                                        } else {
+                                            setActiveTab(item.id);
+                                            setMobileMenuOpen(false);
+                                        }
+                                    }}
+                                        style={{
+                                            textAlign: 'left', padding: '12px 16px', border: 'none',
+                                            background: 'transparent',
+                                            color: isActive ? itemColor : 'var(--text-primary)',
+                                            borderRadius: '8px', fontWeight: 600, fontSize: '16px', cursor: 'pointer'
+                                        }}>
+                                        {item.label}
+                                    </button>
+                                );
+                            })}
+                            <div style={{ height: '1px', background: 'var(--border-color)', margin: '8px 0' }} />
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>Theme Mode</span>
+                                <button onClick={toggleTheme} className="btn-secondary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                    {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+                                    <span>{theme === 'dark' ? 'Light' : 'Dark'}</span>
+                                </button>
+                            </div>
+                            <button onClick={() => { openLogin(); setMobileMenuOpen(false); }} className="btn btn-primary" style={{ width: '100%', padding: '12px' }}>
+                                <LogInIcon />
+                                <span>Login</span>
+                            </button>
+                        </div>
+                    )}
+                    {/* Pincode Input Modal */}
+                </nav>
+            );
+        }
+
+
+
+
+
+        // --- COMPONENT: EXPLORESECTION ---
+        function ExploreSection({ id, title, color, openLogin, marginTop = '40px', children }) {
+            const [hover, setHover] = useState(false);
+            return (
+                <div
+                    id={`section-${id}`}
+                    style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop, scrollMarginTop: '90px', paddingTop: '20px' }}
+                >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <div style={{
+                                width: '4px',
+                                height: '28px',
+                                borderRadius: '2px',
+                                background: `linear-gradient(to bottom, ${color}, ${color}80)`
+                            }} />
+                            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 800, color: 'var(--text-primary)' }}>
+                                Explore {title}
+                            </h3>
+                        </div>
+                        <button
+                            onClick={openLogin}
+                            onMouseEnter={() => setHover(true)}
+                            onMouseLeave={() => setHover(false)}
+                            className="btn"
+                            style={{
+                                padding: '6px 14px',
+                                borderRadius: '8px',
+                                fontSize: '13px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '6px',
+                                cursor: 'pointer',
+                                border: `1px solid ${hover ? color : 'var(--border-color)'}`,
+                                background: hover ? `${color}18` : 'var(--bg-tertiary)',
+                                color: hover ? color : 'var(--text-primary)',
+                                transition: 'all 0.2s ease'
+                            }}
+                        >
+                            <span>View All</span>
+                            <ArrowRightIcon size={12} />
+                        </button>
+                    </div>
+                    {children}
+                </div>
+            );
+        }
+
+        // --- COMPONENT: HOMESECTION ---
+        function HomeSection({ onNavigate, openLogin }) {
+            const [search, setSearch] = useState('');
+            const stats = [
+                { label: 'Medicines Available', value: '12,480+', icon: PillIcon, color: '#3b82f6' },
+                { label: 'Diseases Directory', value: '840+', icon: ShieldAlertIcon, color: '#ef4444' },
+                { label: 'Verified Doctors', value: '1,850+', icon: UsersIcon, color: '#10b981' },
+                { label: 'Partner Pharmacies', value: '420+', icon: MapPinIcon, color: '#f59e0b' },
+                { label: 'Active Clinics', value: '310+', icon: BuildingIcon, color: '#a855f7' }
+            ];
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+                    {/* Hero Banner */}
+                    <div className="glass hero-banner" style={{
+                        padding: '70px 40px', borderRadius: '24px',
+                        textAlign: 'center', position: 'relative', overflow: 'hidden'
+                    }}>
+                        <h2 style={{
+                            fontFamily: 'var(--font-display)',
+                            fontSize: '44px',
+                            fontWeight: 800,
+                            marginBottom: '12px',
+                            lineHeight: '1.2',
+                            background: 'linear-gradient(135deg, var(--text-primary) 30%, #3b82f6 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                        }}>
+                            Welcome to MediSphere
+                        </h2>
+                        <p style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '18px',
+                            fontWeight: 600,
+                            maxWidth: '600px',
+                            margin: '0 auto 8px auto',
+                            lineHeight: '1.5'
+                        }}>
+                            AI-Powered Smart Healthcare Ecosystem
+                        </p>
+                        <p style={{
+                            color: 'var(--text-secondary)',
+                            fontSize: '14px',
+                            maxWidth: '560px',
+                            margin: '0 auto 28px auto',
+                            lineHeight: '1.5',
+                            opacity: 0.85
+                        }}>
+                            Access direct databases for verified healthcare services. Instantly lookup drug details, local clinics, pharmacy inventory, and doctor availability.
+                        </p>
+                        <div style={{ maxWidth: '600px', margin: '0 auto', position: 'relative', display: 'flex', alignItems: 'center' }}>
+                            <SearchIcon style={{ position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} size={20} />
+                            <input type="text" placeholder="Search pills, physician names, health specialties..." value={search} onChange={(e) => setSearch(e.target.value)}
+                                style={{ width: '100%', padding: '16px 20px 16px 54px', borderRadius: '16px', fontSize: '16px' }} />
+                            <button onClick={() => onNavigate('medicines')} className="btn btn-primary" style={{ position: 'absolute', right: '8px', padding: '10px 20px', borderRadius: '10px' }}>
+                                Search
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Stats */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
+                        {stats.map((stat, idx) => {
+                            const Icon = stat.icon;
+                            return (
+                                <div key={idx} className="card stat-card" style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '16px',
+                                    position: 'relative',
+                                    paddingTop: '24px',
+                                    '--hover-color': stat.color,
+                                    '--hover-glow': '0 0 20px ' + stat.color + '40'
+                                }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>{stat.label}</span>
+                                        <div style={{ width: '38px', height: '38px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: `${stat.color}15`, color: stat.color }}>
+                                            <Icon size={18} />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 style={{ fontSize: '28px', fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>{stat.value}</h3>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <ExploreSection id="medicines" title="Medicines" color="#3b82f6" openLogin={openLogin} marginTop="20px">
+                        <MedicinesSection isSlider={true} themeColor="#3b82f6" />
+                    </ExploreSection>
+
+                    <ExploreSection id="diseases" title="Diseases" color="#ef4444" openLogin={openLogin}>
+                        <DiseasesSection isSlider={true} themeColor="#ef4444" />
+                    </ExploreSection>
+
+                    <ExploreSection id="pharmacies" title="Pharmacies" color="#f59e0b" openLogin={openLogin}>
+                        <PharmaciesSection isSlider={true} themeColor="#f59e0b" />
+                    </ExploreSection>
+
+                    <ExploreSection id="doctors" title="Doctors" color="#10b981" openLogin={openLogin}>
+                        <DoctorsSection isSlider={true} themeColor="#10b981" />
+                    </ExploreSection>
+
+                    <ExploreSection id="clinics" title="Clinics" color="#a855f7" openLogin={openLogin}>
+                        <ClinicsSection isSlider={true} themeColor="#a855f7" />
+                    </ExploreSection>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: MEDICINESSECTION ---
+        function MedicinesSection({ isSlider, themeColor }) {
+            const [search, setSearch] = useState('');
+            const [cat, setCat] = useState('All');
+            const meds = [
+                { id: 1, name: 'Paracetamol', generic: 'Acetaminophen', category: 'Analgesic', dose: '500mg', form: 'Tablet', price: '$4.50', stock: 'In Stock', count: 240, description: 'Used to treat mild to moderate pain and reduce fever.' },
+                { id: 2, name: 'Amoxicillin', generic: 'Amoxicillin Trihydrate', category: 'Antibiotic', dose: '250mg', form: 'Capsule', price: '$12.00', stock: 'Low Stock', count: 18, description: 'Penicillin antibiotic used to treat bacterial infections.' },
+                { id: 3, name: 'Cetirizine', generic: 'Cetirizine Hydrochloride', category: 'Antihistamine', dose: '10mg', form: 'Tablet', price: '$6.80', stock: 'In Stock', count: 125, description: 'Non-drowsy allergy relief medicine used to relieve symptoms of hay fever.' },
+                { id: 4, name: 'Atorvastatin', generic: 'Atorvastatin Calcium', category: 'Cardiovascular', dose: '20mg', form: 'Tablet', price: '$18.20', stock: 'In Stock', count: 160, description: 'Statins used to lower cholesterol and help prevent heart disease.' },
+                { id: 5, name: 'Metformin', generic: 'Metformin Hydrochloride', category: 'Antidiabetic', dose: '500mg', form: 'Tablet', price: '$9.40', stock: 'In Stock', count: 320, description: 'Used to treat type 2 diabetes and regulate blood sugar.' },
+                { id: 6, name: 'Ibuprofen', generic: 'Ibuprofen', category: 'Analgesic', dose: '400mg', form: 'Softgel', price: '$5.20', stock: 'Out of Stock', count: 0, description: 'Non-steroidal anti-inflammatory drug used to relieve pain and swelling.' }
+            ];
+
+            const categories = ['All', 'Analgesic', 'Antibiotic', 'Antihistamine', 'Cardiovascular', 'Antidiabetic'];
+            const filtered = isSlider ? meds : meds.filter(m => {
+                const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase()) || m.generic.toLowerCase().includes(search.toLowerCase());
+                const matchesCat = cat === 'All' || m.category === cat;
+                return matchesSearch && matchesCat;
+            });
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', width: '100%' }}>
+                    {!isSlider && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                                <SearchIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                                <input type="text" placeholder="Search by brand or generic name..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: '100%', padding: '12px 16px 12px 46px', borderRadius: '12px' }} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto' }}>
+                                {categories.map(c => (
+                                    <button key={c} onClick={() => setCat(c)} className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', background: cat === c ? 'var(--color-primary-glow)' : undefined, color: cat === c ? 'var(--color-primary)' : undefined, borderColor: cat === c ? 'var(--color-primary)' : undefined }}>
+                                        {c}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={isSlider ? 'theme-slider' : undefined} style={isSlider ? { display: 'flex', overflowX: 'auto', gap: '24px', paddingBottom: '16px', width: '100%', '--slider-color': themeColor } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
+                        {filtered.map(m => (
+                            <div key={m.id} className="card" style={{
+                                ...(isSlider ? { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px', flex: '0 0 320px' } : { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '16px' }),
+                                '--hover-color': themeColor || 'var(--color-primary)',
+                                '--hover-glow': `0 0 20px ${(themeColor || 'var(--color-primary)')}40`
+                            }}>
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                        <span className="badge" style={{ backgroundColor: `${themeColor || 'var(--color-primary)'}15`, color: themeColor || 'var(--color-primary)', border: `1px solid ${themeColor || 'var(--color-primary)'}30` }}>{m.form}</span>
+                                        <span className={`badge ${m.stock === 'In Stock' ? 'badge-success' : m.stock === 'Low Stock' ? 'badge-warning' : 'badge-danger'}`}>{m.stock} ({m.count})</span>
+                                    </div>
+                                    <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 700 }}>{m.name} <span style={{ fontSize: '14px', color: 'var(--text-muted)' }}>{m.dose}</span></h3>
+                                    <span style={{ fontSize: '13px', fontStyle: 'italic', color: 'var(--text-secondary)' }}>Generic: {m.generic}</span>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '8px', lineHeight: '1.4' }}>{m.description}</p>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '16px', alignItems: 'center' }}>
+                                    <div>
+                                        <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Avg Price</span>
+                                        <h4 style={{ fontSize: '18px', fontWeight: 800 }}>{m.price}</h4>
+                                    </div>
+                                    <button disabled={m.stock === 'Out of Stock'} onClick={() => alert(`Locating ${m.name}...`)} className="btn" style={{ padding: '8px 16px', opacity: m.stock === 'Out of Stock' ? 0.5 : 1, backgroundColor: themeColor || 'var(--color-primary)', color: '#fff' }}>
+                                        <ShoppingBagIcon /><span>Locate</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: PHARMACIESSECTION ---
+        function PharmaciesSection({ isSlider, themeColor }) {
+            const [search, setSearch] = useState('');
+            const [delivery, setDelivery] = useState(false);
+            const pharms = [
+                { id: 1, name: 'Apollo Pharmacy', address: '12 Medical Square, Downtown', phone: '+1 (555) 019-2834', hours: 'Open 24/7', delivery: true, stock: 'High', rating: 4.8 },
+                { id: 2, name: 'Wellness Forever Medstore', address: 'Plot 42, Metro Galleria, West End', phone: '+1 (555) 014-9988', hours: 'Open 24/7', delivery: true, stock: 'High', rating: 4.7 },
+                { id: 3, name: 'MedPlus Pharmacy', address: '88 Greenwood Street, Sector 5', phone: '+1 (555) 012-7362', hours: '8:00 AM - 11:00 PM', delivery: false, stock: 'Medium', rating: 4.5 },
+                { id: 4, name: 'Guardian Care Pharmacy', address: '104 Lakeside Drive, Northern Heights', phone: '+1 (555) 015-8811', hours: '9:00 AM - 9:00 PM', delivery: true, stock: 'Medium', rating: 4.3 }
+            ];
+
+            const filtered = isSlider ? pharms : pharms.filter(p => {
+                const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || p.address.toLowerCase().includes(search.toLowerCase());
+                const matchesDelivery = !delivery || p.delivery;
+                return matchesSearch && matchesDelivery;
+            });
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', width: '100%' }}>
+                    {!isSlider && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                                <SearchIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                                <input type="text" placeholder="Search pharmacy or locality..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: '100%', padding: '12px 16px 12px 46px', borderRadius: '12px' }} />
+                            </div>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: 'var(--text-secondary)', cursor: 'pointer' }}>
+                                <input type="checkbox" checked={delivery} onChange={(e) => setDelivery(e.target.checked)} style={{ width: '18px', height: '18px' }} />
+                                <span>Show Delivery Only</span>
+                            </label>
+                        </div>
+                    )}
+
+                    <div className={isSlider ? 'theme-slider' : undefined} style={isSlider ? { display: 'flex', overflowX: 'auto', gap: '24px', paddingBottom: '16px', width: '100%', '--slider-color': themeColor } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+                        {filtered.map(p => (
+                            <div key={p.id} className="card" style={{
+                                ...(isSlider ? { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', flex: '0 0 340px' } : { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }),
+                                '--hover-color': themeColor || 'var(--color-primary)',
+                                '--hover-glow': `0 0 20px ${(themeColor || 'var(--color-primary)')}40`
+                            }}>
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                                        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '18px', fontWeight: 700 }}>{p.name}</h3>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#f59e0b', fontSize: '13px', fontWeight: 700 }}><StarIcon size={12} />{p.rating}</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>
+                                        <span className="badge badge-success">{p.stock} Stock</span>
+                                        {p.delivery && <span className="badge" style={{ backgroundColor: `${themeColor || 'var(--color-primary)'}15`, color: themeColor || 'var(--color-primary)', border: `1px solid ${themeColor || 'var(--color-primary)'}30` }}><TruckIcon size={10} style={{ marginRight: '4px' }} />Delivery</span>}
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPinIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{p.address}</span></div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><PhoneIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{p.phone}</span></div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ClockIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{p.hours}</span></div>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                                    <button onClick={() => alert(`Calling ${p.name}`)} className="btn btn-secondary" style={{ flex: 1 }}>Call</button>
+                                    <button onClick={() => alert(`Showing directions to ${p.name}`)} className="btn" style={{ flex: 1, backgroundColor: themeColor || 'var(--color-primary)', color: '#fff' }}><ExternalLinkIcon />Directions</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: DOCTORSSECTION ---
+        function DoctorsSection({ isSlider, themeColor }) {
+            const [search, setSearch] = useState('');
+            const [spec, setSpec] = useState('All');
+            const docs = [
+                { id: 1, name: 'Dr. Sarah Jenkins', specialty: 'Cardiology', exp: '12 years', rating: 4.9, fee: '$80', availability: 'Today', initials: 'SJ' },
+                { id: 2, name: 'Dr. Robert Chen', specialty: 'Pediatrics', exp: '8 years', rating: 4.8, fee: '$60', availability: 'Tomorrow', initials: 'RC' },
+                { id: 3, name: 'Dr. Elena Rostova', specialty: 'Dermatology', exp: '15 years', rating: 4.9, fee: '$90', availability: 'Today', initials: 'ER' },
+                { id: 4, name: 'Dr. Marcus Vance', specialty: 'General Medicine', exp: '10 years', rating: 4.7, fee: '$50', availability: 'Monday', initials: 'MV' }
+            ];
+
+            const specialties = ['All', 'Cardiology', 'Pediatrics', 'Dermatology', 'General Medicine'];
+            const filtered = isSlider ? docs : docs.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(search.toLowerCase());
+                const matchesSpec = spec === 'All' || d.specialty === spec;
+                return matchesSearch && matchesSpec;
+            });
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', width: '100%' }}>
+                    {!isSlider && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                                <SearchIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                                <input type="text" placeholder="Search doctor name..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: '100%', padding: '12px 16px 12px 46px', borderRadius: '12px' }} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto' }}>
+                                {specialties.map(s => (
+                                    <button key={s} onClick={() => setSpec(s)} className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', background: spec === s ? 'var(--color-primary-glow)' : undefined, color: spec === s ? 'var(--color-primary)' : undefined, borderColor: spec === s ? 'var(--color-primary)' : undefined }}>
+                                        {s}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={isSlider ? 'theme-slider' : undefined} style={isSlider ? { display: 'flex', overflowX: 'auto', gap: '24px', paddingBottom: '16px', width: '100%', '--slider-color': themeColor } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+                        {filtered.map(d => (
+                            <div key={d.id} className="card" style={{
+                                ...(isSlider ? { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', flex: '0 0 340px' } : { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }),
+                                '--hover-color': themeColor || 'var(--color-primary)',
+                                '--hover-glow': `0 0 20px ${(themeColor || 'var(--color-primary)')}40`
+                            }}>
+                                <div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '16px' }}>
+                                        <div style={{ width: '50px', height: '50px', borderRadius: '50%', background: `linear-gradient(135deg, ${themeColor || 'var(--color-primary)'} 0%, ${themeColor || 'var(--color-primary)'}bb 100%)`, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>{d.initials}</div>
+                                        <div>
+                                            <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{d.name}</h3>
+                                            <span className="badge" style={{ backgroundColor: `${themeColor || 'var(--color-primary)'}15`, color: themeColor || 'var(--color-primary)', border: `1px solid ${themeColor || 'var(--color-primary)'}30` }}>{d.specialty}</span>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--bg-tertiary)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Experience</span><strong style={{ color: 'var(--text-primary)' }}>{d.exp}</strong></div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Rating</span><strong style={{ color: 'var(--text-primary)' }}>{d.rating} / 5.0</strong></div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Fee</span><strong style={{ color: 'var(--text-primary)' }}>{d.fee}</strong></div>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Available</span><strong style={{ color: 'var(--color-success)' }}>{d.availability}</strong></div>
+                                    </div>
+                                </div>
+                                <button onClick={() => alert(`Booking consultation with ${d.name}`)} className="btn" style={{ width: '100%', gap: '8px', backgroundColor: themeColor || 'var(--color-primary)', color: '#fff' }}>
+                                    <CalendarIcon /><span>Book Consultation</span>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: CLINICSSECTION ---
+        function ClinicsSection({ isSlider, themeColor }) {
+            const [search, setSearch] = useState('');
+            const clinData = [
+                { id: 1, name: 'Metro Health Clinic', type: 'Clinic', specialty: 'General Practice & Diagnostics', rating: 4.8, address: 'Building B, West Plaza', phone: '+1 (555) 019-8800', hours: '8:00 AM - 8:00 PM' },
+                { id: 2, name: 'City General Hospital', type: 'Hospital', specialty: 'Multi-specialty & Emergency', rating: 4.9, address: '1 Central Square, Downtown', phone: '+1 (555) 019-9111', hours: 'Open 24/7' },
+                { id: 3, name: 'Apex Dental & Eye Clinic', type: 'Clinic', specialty: 'Ophthalmology & Dentistry', rating: 4.6, address: 'Suite 3, East Galleria', phone: '+1 (555) 021-1400', hours: '9:00 AM - 6:00 PM' }
+            ];
+
+            const filtered = isSlider ? clinData : clinData.filter(c => c.name.toLowerCase().includes(search.toLowerCase()) || c.specialty.toLowerCase().includes(search.toLowerCase()));
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', width: '100%' }}>
+                    {!isSlider && (
+                        <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                            <SearchIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                            <input type="text" placeholder="Search facility name or service..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: '100%', padding: '12px 16px 12px 46px', borderRadius: '12px' }} />
+                        </div>
+                    )}
+
+                    <div className={isSlider ? 'theme-slider' : undefined} style={isSlider ? { display: 'flex', overflowX: 'auto', gap: '24px', paddingBottom: '16px', width: '100%', '--slider-color': themeColor } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+                        {filtered.map(c => (
+                            <div key={c.id} className="card" style={{
+                                ...(isSlider ? { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', flex: '0 0 340px' } : { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }),
+                                '--hover-color': themeColor || 'var(--color-primary)',
+                                '--hover-glow': `0 0 20px ${(themeColor || 'var(--color-primary)')}40`
+                            }}>
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                                        <div>
+                                            <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{c.name}</h3>
+                                            <span className="badge" style={{ marginTop: '4px', backgroundColor: `${themeColor || 'var(--color-primary)'}15`, color: themeColor || 'var(--color-primary)', border: `1px solid ${themeColor || 'var(--color-primary)'}30` }}>{c.type}</span>
+                                        </div>
+                                        <span style={{ display: 'flex', alignItems: 'center', gap: '4px', color: '#f59e0b', fontSize: '13px', fontWeight: 700 }}><StarIcon size={12} />{c.rating}</span>
+                                    </div>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', background: 'var(--bg-tertiary)', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-color)', margin: '12px 0' }}>Services: {c.specialty}</p>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px', color: 'var(--text-secondary)' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><MapPinIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{c.address}</span></div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><PhoneIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{c.phone}</span></div>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><ClockIcon size={14} style={{ color: themeColor || 'var(--color-primary)' }} /><span>{c.hours}</span></div>
+                                    </div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '10px', borderTop: '1px solid var(--border-color)', paddingTop: '16px' }}>
+                                    <button onClick={() => alert(`Calling reception...`)} className="btn btn-secondary" style={{ flex: 1 }}>Call Reception</button>
+                                    <button onClick={() => alert(`Viewing details...`)} className="btn" style={{ flex: 1, backgroundColor: themeColor || 'var(--color-primary)', color: '#fff' }}><ShieldCheckIcon />View Services</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: LOGINMODAL ---
+        function LoginModal({ onClose }) {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                alert(`Logged in as: ${email}`);
+                onClose();
+            };
+
+            return (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(3, 7, 18, 0.7)', backdropFilter: 'blur(8px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px'
+                }}>
+                    <div className="glass" style={{ width: '100%', maxWidth: '400px', borderRadius: '24px', padding: '36px', position: 'relative' }}>
+                        <button onClick={onClose} className="btn-ghost" style={{ position: 'absolute', top: '20px', right: '20px', width: '30px', height: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '50%' }}>
+                            <XIcon size={18} />
+                        </button>
+                        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+                            <div style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)', width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px auto', boxShadow: '0 0 15px rgba(59, 130, 246, 0.4)' }}>
+                                <HeartPulseIcon size={24} />
+                            </div>
+                            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '24px', fontWeight: 800 }}>Welcome Back</h2>
+                            <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Sign in to manage your health portal account</p>
+                        </div>
+                        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                <label style={{ fontSize: '13px', fontWeight: 600 }}>Email Address</label>
+                                <input type="email" placeholder="email@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                                <label style={{ fontSize: '13px', fontWeight: 600 }}>Password</label>
+                                <input type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
+                            </div>
+                            <button type="submit" className="btn btn-primary" style={{ padding: '14px', borderRadius: '12px', marginTop: '10px' }}>Sign In</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- COMPONENT: PINCODEMODAL ---
+        function PincodeModal({ isOpen, onClose, pincode, setPincode }) {
+            const [tempPincode, setTempPincode] = useState(pincode);
+
+            useEffect(() => {
+                if (isOpen) {
+                    setTempPincode(pincode);
+                }
+            }, [isOpen, pincode]);
+
+            if (!isOpen) return null;
+
+            return (
+                <div style={{
+                    position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+                    backgroundColor: 'rgba(3, 7, 18, 0.65)', backdropFilter: 'blur(8px)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    zIndex: 1100, padding: '20px'
+                }}>
+                    <div className="glass animate-fade-in" style={{
+                        width: '100%', maxWidth: '360px', borderRadius: '20px', padding: '30px',
+                        position: 'relative', display: 'flex', flexDirection: 'column', gap: '20px',
+                        boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)'
+                    }}>
+                        {/* Header */}
+                        <div style={{ textAlign: 'center' }}>
+                            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '20px', fontWeight: 800 }}>Enter Location Pincode</h3>
+                            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '4px' }}>Provide a 6-digit pincode to locate services nearby</p>
+                        </div>
+                        
+                        {/* Input */}
+                        <input
+                            type="text"
+                            maxLength={6}
+                            placeholder="e.g. 380015"
+                            value={tempPincode}
+                            onChange={(e) => setTempPincode(e.target.value.replace(/\D/g, ''))}
+                            style={{
+                                width: '100%', padding: '12px 16px', borderRadius: '10px', fontSize: '16px',
+                                border: '1px solid var(--border-color)', background: 'var(--bg-tertiary)',
+                                color: 'var(--text-primary)', textAlign: 'center', fontWeight: 700,
+                                letterSpacing: '4px', outline: 'none'
+                            }}
+                        />
+
+                        {/* Buttons */}
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                            <button 
+                                onClick={onClose} 
+                                className="btn btn-secondary" 
+                                style={{ flex: 1, padding: '10px', borderRadius: '10px', fontSize: '14px' }}
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={() => {
+                                    if (tempPincode.length !== 6) {
+                                        alert('Pincode must be exactly 6 digits!');
+                                        return;
+                                    }
+                                    setPincode(tempPincode);
+                                    onClose();
+                                }} 
+                                className="btn btn-primary" 
+                                style={{ flex: 1, padding: '10px', borderRadius: '10px', fontSize: '14px' }}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- COMPONENT: DISEASESSECTION ---
+        function DiseasesSection({ isSlider, themeColor }) {
+            const [search, setSearch] = useState('');
+            const [cat, setCat] = useState('All');
+            const diseases = [
+                { id: 1, name: 'Type 2 Diabetes', category: 'Chronic', severity: 'Moderate', symptoms: ['Excessive thirst', 'Frequent urination', 'Increased hunger', 'Unexplained fatigue'], treatment: ['Metformin', 'Insulin therapy', 'Regular exercise', 'Dietary monitoring'], specialist: 'Endocrinologist' },
+                { id: 2, name: 'Hypertension (High Blood Pressure)', category: 'Chronic', severity: 'Low to Moderate', symptoms: ['Headaches (rare)', 'Shortness of breath', 'Nosebleeds', 'Often asymptomatic'], treatment: ['Amlodipine', 'Lisinopril', 'Low sodium diet', 'Regular cardiovascular checks'], specialist: 'Cardiologist' },
+                { id: 3, name: 'Influenza (Flu)', category: 'Infectious', severity: 'Acute', symptoms: ['High fever', 'Chills & body muscle aches', 'Dry cough', 'Nasal congestion'], treatment: ['Rest and hydration', 'Paracetamol for fever', 'Oseltamivir (Antiviral)'], specialist: 'General Physician' },
+                { id: 4, name: 'Asthma', category: 'Respiratory', severity: 'Variable', symptoms: ['Wheezing', 'Shortness of breath', 'Chest tightness', 'Coughing fits'], treatment: ['Albuterol (Inhaler)', 'Fluticasone (Steroid)', 'Avoiding allergy triggers'], specialist: 'Pulmonologist' },
+                { id: 5, name: 'Migraine', category: 'Neurological', severity: 'Moderate to High', symptoms: ['Severe throbbing headache', 'Nausea and vomiting', 'Sensitivity to light & sound'], treatment: ['Ibuprofen', 'Sumatriptan', 'Rest in a quiet dark room', 'Hydration'], specialist: 'Neurologist' },
+                { id: 6, name: 'Gastroenteritis', category: 'Infectious', severity: 'Acute', symptoms: ['Watery diarrhea', 'Abdominal cramps', 'Nausea & vomiting', 'Low-grade fever'], treatment: ['Oral Rehydration Salts (ORS)', 'Probiotics', 'Bland diet (BRAT)', 'Rest'], specialist: 'Gastroenterologist' }
+            ];
+
+            const categories = ['All', 'Chronic', 'Infectious', 'Respiratory', 'Neurological'];
+            const filtered = isSlider ? diseases : diseases.filter(d => {
+                const matchesSearch = d.name.toLowerCase().includes(search.toLowerCase()) || d.specialist.toLowerCase().includes(search.toLowerCase());
+                const matchesCat = cat === 'All' || d.category === cat;
+                return matchesSearch && matchesCat;
+            });
+
+            return (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px', width: '100%' }}>
+                    {!isSlider && (
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+                                <SearchIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                                <input type="text" placeholder="Search by disease name or specialist..." value={search} onChange={(e) => setSearch(e.target.value)} style={{ width: '100%', padding: '12px 16px 12px 46px', borderRadius: '12px' }} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '8px', overflowX: 'auto' }}>
+                                {categories.map(c => (
+                                    <button key={c} onClick={() => setCat(c)} className="btn-secondary" style={{ padding: '8px 16px', borderRadius: '8px', background: cat === c ? 'var(--color-primary-glow)' : undefined, color: cat === c ? 'var(--color-primary)' : undefined, borderColor: cat === c ? 'var(--color-primary)' : undefined }}>
+                                        {c}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={isSlider ? 'theme-slider' : undefined} style={isSlider ? { display: 'flex', overflowX: 'auto', gap: '24px', paddingBottom: '16px', width: '100%', '--slider-color': themeColor } : { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '24px' }}>
+                        {filtered.map(d => (
+                            <div key={d.id} className="card" style={{
+                                ...(isSlider ? { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px', flex: '0 0 340px' } : { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '20px' }),
+                                '--hover-color': themeColor || 'var(--color-primary)',
+                                '--hover-glow': `0 0 20px ${(themeColor || 'var(--color-primary)')}40`
+                            }}>
+                                <div>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                                        <div>
+                                            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '19px', fontWeight: 700 }}>{d.name}</h3>
+                                            <span className="badge" style={{ marginTop: '4px', backgroundColor: `${themeColor || 'var(--color-primary)'}15`, color: themeColor || 'var(--color-primary)', border: `1px solid ${themeColor || 'var(--color-primary)'}30` }}>{d.category}</span>
+                                        </div>
+                                        <span className="badge badge-warning" style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)', color: 'var(--color-warning)' }}>{d.severity} Severity</span>
+                                    </div>
+                                    {!isSlider && (
+                                        <>
+                                            <div style={{ marginBottom: '16px' }}>
+                                                <h4 style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 700 }}>Key Symptoms</h4>
+                                                <ul style={{ paddingLeft: '16px', fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
+                                                    {d.symptoms.map((s, idx) => <li key={idx}>{s}</li>)}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h4 style={{ fontSize: '12px', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', fontWeight: 700 }}>Care & First-line Treatments</h4>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                                    {d.treatment.map((t, idx) => (
+                                                        <span key={idx} style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)', fontWeight: 500 }}>{t}</span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                    {isSlider && (
+                                        <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginTop: '8px', lineHeight: '1.4' }}>
+                                            Primary care and clinical management is directed by a qualified {d.specialist}.
+                                        </p>
+                                    )}
+                                </div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--border-color)', paddingTop: '16px', marginTop: 'auto' }}>
+                                    <div>
+                                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase' }}>Recommended care</span>
+                                        <span style={{ fontSize: '13px', fontWeight: 700 }}>{d.specialist}</span>
+                                    </div>
+                                    <button onClick={() => alert(`Redirecting to list of specialists for: ${d.specialist}`)} className="btn" style={{ padding: '8px 14px', borderRadius: '8px', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '4px', backgroundColor: themeColor || 'var(--color-primary)', color: '#fff' }}>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
+                                        <span>Consult</span>
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        }
+
+
+        // --- MAIN APP SHELL ---
+        function App() {
+            const [theme, setTheme] = useState('dark');
+            const [activeTab, setActiveTab] = useState('home');
+            const [isLoginOpen, setIsLoginOpen] = useState(false);
+            const [pincode, setPincode] = useState('');
+            const [isPincodeModalOpen, setIsPincodeModalOpen] = useState(false);
+            const isScrollingRef = useRef(false);
+
+            useEffect(() => {
+                document.documentElement.setAttribute('data-theme', theme);
+            }, [theme]);
+
+            const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+
+            const scrollToSection = (sectionId, tabId = sectionId) => {
+                isScrollingRef.current = true;
+                setActiveTab(tabId);
+                setTimeout(() => {
+                    const el = document.getElementById(`section-${sectionId}`) || document.getElementById(sectionId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setTimeout(() => {
+                        isScrollingRef.current = false;
+                    }, 800);
+                }, 50);
+            };
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    if (isScrollingRef.current) return;
+
+                    const scrollPosition = window.scrollY;
+                    const viewportHeight = window.innerHeight;
+                    const documentHeight = document.documentElement.scrollHeight;
+
+                    // Bottom of the page fallback -> highlight Contact Us
+                    if (scrollPosition + viewportHeight >= documentHeight - 60) {
+                        setActiveTab('about');
+                        return;
+                    }
+
+                    // Top of the page fallback -> highlight Home
+                    if (scrollPosition < 150) {
+                        setActiveTab('home');
+                        return;
+                    }
+
+                    const sections = [
+                        { id: 'medicines', elId: 'section-medicines' },
+                        { id: 'diseases', elId: 'section-diseases' },
+                        { id: 'pharmacies', elId: 'section-pharmacies' },
+                        { id: 'doctors', elId: 'section-doctors' },
+                        { id: 'clinics', elId: 'section-clinics' }
+                    ];
+
+                    const focusLine = 140;
+                    let currentSection = 'home';
+
+                    for (const sec of sections) {
+                        const el = document.getElementById(sec.elId);
+                        if (el) {
+                            const rect = el.getBoundingClientRect();
+                            if (rect.top <= focusLine) {
+                                currentSection = sec.id;
+                            }
+                        }
+                    }
+
+                    setActiveTab(currentSection);
+                };
+
+                window.addEventListener('scroll', handleScroll);
+                return () => {
+                    window.removeEventListener('scroll', handleScroll);
+                };
+            }, []);
+
+            const renderSection = () => {
+                return <HomeSection onNavigate={scrollToSection} openLogin={() => setIsLoginOpen(true)} />;
+            };
+
+            return (
+                <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+                    <Navbar activeTab={activeTab} setActiveTab={setActiveTab} theme={theme} toggleTheme={toggleTheme} openLogin={() => setIsLoginOpen(true)} scrollToSection={scrollToSection} pincode={pincode} openPincode={() => setIsPincodeModalOpen(true)} />
+                    <main style={{ flex: 1, padding: '40px 0' }}>
+                        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
+                            {renderSection()}
+                        </div>
+                    </main>
+                    <footer id="section-about" className="glass" style={{ padding: '30px 0 10px 0', borderTop: 'var(--glass-border)', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '40px' }}>
+                                {/* Left Side: Brand Logo, Tagline and Description */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '360px', alignItems: 'flex-start', textAlign: 'left' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                        <div style={{
+                                            background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+                                            width: '32px', height: '32px', borderRadius: '8px',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            boxShadow: '0 0 10px rgba(59, 130, 246, 0.4)',
+                                        }}>
+                                            <HeartPulseIcon size={18} />
+                                        </div>
+                                        <span style={{
+                                            fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '20px',
+                                            letterSpacing: '-0.02em',
+                                            background: 'linear-gradient(135deg, var(--text-primary) 30%, #3b82f6 100%)',
+                                            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                                        }}>
+                                            MediSphere
+                                        </span>
+                                    </div>
+                                    <p style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', margin: 0 }}>
+                                        AI-Powered Smart Healthcare Ecosystem
+                                    </p>
+                                    <p style={{ fontSize: '12px', lineHeight: '1.5', color: 'var(--text-muted)', margin: 0 }}>
+                                        Access direct databases for verified healthcare services. Instantly lookup drug details, local clinics, pharmacy inventory, and doctor availability.
+                                    </p>
+                                </div>
+
+                                {/* Center: Quick Links */}
+                                <div style={{ display: 'flex', justifyContent: 'center', flex: 1, minWidth: '200px' }}>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-start', textAlign: 'left' }}>
+                                        <strong style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '18px', marginBottom: '4px' }}>Quick Links</strong>
+                                        <FooterLink href="#medicines" label="Medicines" hoverColor="#3b82f6" onClick={(e) => { e.preventDefault(); scrollToSection('medicines'); }} />
+                                        <FooterLink href="#diseases" label="Diseases" hoverColor="#ef4444" onClick={(e) => { e.preventDefault(); scrollToSection('diseases'); }} />
+                                        <FooterLink href="#pharmacies" label="Pharmacies" hoverColor="#f59e0b" onClick={(e) => { e.preventDefault(); scrollToSection('pharmacies'); }} />
+                                        <FooterLink href="#doctors" label="Doctors" hoverColor="#10b981" onClick={(e) => { e.preventDefault(); scrollToSection('doctors'); }} />
+                                        <FooterLink href="#clinics" label="Clinics" hoverColor="#a855f7" onClick={(e) => { e.preventDefault(); scrollToSection('clinics'); }} />
+                                    </div>
+                                </div>
+
+                                {/* Right Side: Contact Us */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'flex-end', textAlign: 'right' }}>
+                                    <strong style={{ color: 'var(--text-primary)', fontFamily: 'var(--font-display)', fontSize: '18px', marginBottom: '4px' }}>Contact Us</strong>
+                                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-secondary)', fontSize: '13px' }}>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                                        </svg>
+                                        <span>+91 9601070101</span>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', color: 'var(--text-secondary)', fontSize: '13px' }}>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                                            <rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                                        </svg>
+                                        <span>medisphere@gmail.com</span>
+                                    </div>
+                                    <div style={{ display: 'flex', gap: '14px', marginTop: '6px' }}>
+                                        {/* WhatsApp */}
+                                        <a href="https://wa.me/919601070101" target="_blank" rel="noopener noreferrer" className="social-icon whatsapp" title="WhatsApp">
+                                            <svg className="social-icon whatsapp" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.414 0 .004 5.411.002 12.048c0 2.12.54 4.19 1.566 6.02L0 24l6.125-1.606a11.848 11.848 0 005.922 1.577h.005c6.632 0 12.042-5.411 12.045-12.048a11.82 11.82 0 00-3.535-8.414z" />
+                                            </svg>
+                                        </a>
+                                        {/* Instagram */}
+                                        <a href="https://instagram.com/vasumiyani01" target="_blank" rel="noopener noreferrer" className="social-icon instagram" title="Instagram">
+                                            <svg className="social-icon instagram" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                            </svg>
+                                        </a>
+                                        {/* X */}
+                                        <a href="https://x.com/vasumiyani01" target="_blank" rel="noopener noreferrer" className="social-icon x-logo" title="X">
+                                            <svg className="social-icon x-logo" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                            </svg>
+                                        </a>
+                                        {/* Facebook */}
+                                        <a href="https://facebook.com/vasumiyani01" target="_blank" rel="noopener noreferrer" className="social-icon facebook" title="Facebook">
+                                            <svg className="social-icon facebook" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Divider & Copyright */}
+                            <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '10px', paddingBottom: '10px', marginTop: '-15px', textAlign: 'center' }}>
+                                <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                                    © MediSphere 2026. All rights reserved.
+                                </span>
+                            </div>
+                        </div>
+                    </footer>
+                    {isLoginOpen && <LoginModal onClose={() => setIsLoginOpen(false)} />}
+                    <PincodeModal isOpen={isPincodeModalOpen} onClose={() => setIsPincodeModalOpen(false)} pincode={pincode} setPincode={setPincode} />
+                </div>
+            );
+        }
+
+        // Mount React
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+    {% endverbatim %}
+</body>
+
+</html>
