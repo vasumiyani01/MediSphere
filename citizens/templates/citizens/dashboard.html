@@ -1,0 +1,1131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Dashboard | MediSphere</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'citizens/dashboard.css' %}?v=1.0.5">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="brand-logo">
+            <div class="logo-sq">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.5">
+                    <path
+                        d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+                </svg>
+            </div>
+            <span class="brand-text">MediSphere</span>
+        </div>
+        <ul class="nav-links">
+            <li class="nav-item active"><a href="#overview">Overview</a></li>
+            <li class="nav-item"><a href="#medicines">Medicines</a></li>
+            <li class="nav-item"><a href="#diseases">Diseases</a></li>
+            <li class="nav-item"><a href="#reports">My Reports</a></li>
+            <li class="nav-item"><a href="#bookings">My Appointment</a></li>
+            <li class="nav-item"><a href="#cart">My Cart</a></li>
+            <li class="nav-item"><a href="#orders">My Orders</a></li>
+            <li class="nav-item"><a href="#records">Medical History</a></li>
+            <li class="nav-item"><a href="#profile">Profile</a></li>
+        </ul>
+        <button class="logout-btn" onclick="handleLogout()">Logout</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <header>
+            <div>
+                <h1 id="greeting">Welcome back!</h1>
+                <p style="color: var(--text-secondary); margin-top: 4px; font-size: 14px;">Here's your smart health
+                    summary</p>
+            </div>
+            <div class="user-badge" style="display: none;">
+                <div class="badge-dot"></div>
+                <span id="userType">Citizen</span>
+            </div>
+        </header>
+
+        <!-- Profile Incomplete Alert Banner -->
+        <div id="profile-alert-container" style="display: none; margin-bottom: 24px;">
+            <div
+                style="background-color: var(--color-warning-glow); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <svg width="20" height="20" fill="none" stroke="var(--color-warning)" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                        <line x1="12" y1="9" x2="12" y2="13" />
+                        <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                    <div>
+                        <strong style="color: var(--text-primary); font-size: 14px;">Complete your profile
+                            details!</strong>
+                        <p style="color: var(--text-secondary); font-size: 13px; margin-top: 2px;">Please fill in your
+                            address, age, and gender details to unlock all dashboard options.</p>
+                    </div>
+                </div>
+                <button class="btn-action" onclick="openProfileModal()"
+                    style="background-color: var(--color-warning); color: white; padding: 8px 16px; font-size: 13px; border: none; border-radius: 6px; cursor: pointer;">Complete
+                    Profile</button>
+            </div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="tab-overview" class="tab-content">
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <!-- Medicines Card -->
+                <div class="card" onclick="window.location.hash='#medicines'; switchTab('medicines');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-primary-glow); color: var(--color-primary);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+                            <path d="m8.5 8.5 7 7" />
+                        </svg>
+                    </div>
+                    <span class="card-title">Medicines</span>
+                    <span class="card-desc">Browse available medicines</span>
+                </div>
+
+                <!-- Diseases Card -->
+                <div class="card" onclick="window.location.hash='#diseases'; switchTab('diseases');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-warning-glow); color: var(--color-warning);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                    </div>
+                    <span class="card-title">Diseases</span>
+                    <span class="card-desc">Browse health definitions</span>
+                </div>
+
+                <!-- Lab Reports Count Card -->
+                <div class="card" onclick="window.location.hash='#reports'; switchTab('reports');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-info-glow); color: var(--color-info);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                    </div>
+                    <span class="card-title">My Reports</span>
+                    <span class="card-value" id="count-reports">4</span>
+                    <span class="card-desc">View diagnostic reports</span>
+                </div>
+
+                <!-- Appointments Count Card -->
+                <div class="card" onclick="window.location.hash='#bookings'; switchTab('bookings');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-primary-glow); color: var(--color-primary);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+                            <path d="M16 2v4M8 2v4M3 10h18" />
+                        </svg>
+                    </div>
+                    <span class="card-title">My Appointments</span>
+                    <span class="card-value" id="count-appointments-total">...</span>
+                    <span class="card-desc">Manage consultations</span>
+                </div>
+
+                <!-- Orders Count Card -->
+                <div class="card" onclick="window.location.hash='#orders'; switchTab('orders');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-success-glow); color: var(--color-success);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                            <line x1="3" y1="6" x2="21" y2="6" />
+                            <path d="M16 10a4 4 0 0 1-8 0" />
+                        </svg>
+                    </div>
+                    <span class="card-title">My Orders</span>
+                    <span class="card-value" id="count-orders-total">...</span>
+                    <span class="card-desc">Track active purchases</span>
+                </div>
+
+                <!-- Medical History Count Card -->
+                <div class="card" onclick="window.location.hash='#records'; switchTab('records');"
+                    style="cursor: pointer;">
+                    <div class="card-icon-box"
+                        style="background-color: var(--color-info-glow); color: var(--color-info);">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <span class="card-title">Medical History</span>
+                    <span class="card-desc">View timeline of records</span>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Medicines Tab -->
+        <div id="tab-medicines" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px; margin-bottom: 24px;">
+                <span class="widget-title">Ecosystem Medicines</span>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Search and order medicines
+                    directly from registered pharmacy stores.</p>
+                <div
+                    style="display: flex; gap: 12px; margin-top: 15px; flex-wrap: wrap; width: 100%; align-items: center;">
+                    <input type="text" id="search-medicine-input"
+                        onkeypress="if(event.key === 'Enter') filterMedicines()"
+                        placeholder="Search medicine name, uses, or manufacturer..."
+                        style="flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; outline: none; background: #ffffff; color: #0f172a;">
+                    <button onclick="filterMedicines()" class="btn-primary"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); border: none; height: auto;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search</span>
+                    </button>
+                    <select id="filter-medicine-cat" onchange="filterMedicines()"
+                        style="padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; cursor: pointer; outline: none; background: white; color: #0f172a; height: 46px;">
+                        <option value="all">All Categories</option>
+                        <option value="tablet">Tablet</option>
+                        <option value="capsule">Capsule</option>
+                        <option value="syrup">Syrup</option>
+                        <option value="drops">Drops</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            <div id="medicines-pincode-info"
+                style="display: none; background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03)); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; color: var(--text-secondary);">
+            </div>
+            <div id="medicines-container"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                <!-- Medicines listed here dynamically -->
+            </div>
+        </div>
+
+        <!-- Diseases Tab -->
+        <div id="tab-diseases" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px; margin-bottom: 24px;">
+                <span class="widget-title">Classified Medical Diseases</span>
+                <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Explore symptoms,
+                    complications, risk factors, and treatments of classified medical disorders.</p>
+                <div
+                    style="margin-top: 15px; display: flex; gap: 12px; flex-wrap: wrap; width: 100%; align-items: center;">
+                    <input type="text" id="search-disease-input" onkeypress="if(event.key === 'Enter') filterDiseases()"
+                        placeholder="Search disease name, description, symptoms..."
+                        style="flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; outline: none; background: #ffffff; color: #0f172a;">
+                    <button onclick="filterDiseases()" class="btn-primary"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); border: none; height: auto;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+            <div id="diseases-container"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+                <!-- Diseases listed here dynamically -->
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="tab-reports" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px; margin-bottom: 24px;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+                    <div>
+                        <span class="widget-title">My Lab Reports</span>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Manage your lab
+                            report records and tracking indicators.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openAddReportModal()"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; font-size: 14px; height: 46px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #10b981; box-shadow: none;">+
+                        Add New Report</button>
+                </div>
+                <div style="display: flex; gap: 12px; width: 100%; align-items: center;">
+                    <input type="text" id="search-report-input" onkeypress="if(event.key === 'Enter') filterReports()"
+                        placeholder="Search report name, short name..."
+                        style="flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; outline: none; background: #ffffff; color: #0f172a; height: 46px;">
+                    <button onclick="filterReports()" class="btn-primary"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); border: none; height: 46px;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card" style="padding: 24px;">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr style="background: var(--bg-tertiary);">
+                                <th style="padding: 12px 16px; text-align: left;">ID</th>
+                                <th style="padding: 12px 16px; text-align: left;">Report Name</th>
+                                <th style="padding: 12px 16px; text-align: left;">Report Short Name</th>
+                                <th style="padding: 12px 16px; text-align: center;">Status</th>
+                                <th style="padding: 12px 16px; text-align: left;">Report Date</th>
+                                <th style="padding: 12px 16px; text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reports-tbody">
+                            <!-- Reports mapped dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit Report Modal -->
+        <div id="reportModal"
+            style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+            <div
+                style="background: white; width: 100%; max-width: 800px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease; display: flex; flex-direction: column; max-height: 90vh;">
+                <div
+                    style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                    <h3 id="report-modal-title"
+                        style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                        Add Lab Report</h3>
+                    <span style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff;"
+                        onclick="closeReportModal()">✕</span>
+                </div>
+                <form id="reportForm" onsubmit="submitReportForm(event)"
+                    style="padding: 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex-grow: 1;">
+                    <input type="hidden" id="report-form-id">
+
+                    <!-- Template selection section (only shown when adding/editing report with template) -->
+                    <div id="template-select-wrapper"
+                        style="display: flex; flex-direction: column; gap: 6px; position: relative;">
+                        <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Select Report
+                            Template</label>
+                        <input type="text" id="report-template-search" oninput="filterTemplateOptions()"
+                            onfocus="showTemplateDropdown()" placeholder="🔍 Type to search available templates..."
+                            autocomplete="off"
+                            style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a; width: 100%;">
+                        <input type="hidden" id="report-template-select-val">
+                        <div id="report-template-dropdown-panel"
+                            style="position: absolute; top: calc(100% - 2px); left: 0; right: 0; background: white; border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); max-height: 160px; overflow-y: auto; z-index: 1000; display: none;">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Auto filled Report Info fields -->
+                    <div id="report-template-details-section" style="display: none; flex-direction: column; gap: 12px;">
+                        <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label
+                                    style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Report
+                                    Name</label>
+                                <input type="text" id="report-form-name" readonly
+                                    style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-tertiary); color: var(--text-secondary); font-size: 13px; font-weight: 600;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label
+                                    style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Short
+                                    Name</label>
+                                <input type="text" id="report-form-shortname" readonly
+                                    style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-tertiary); color: var(--text-secondary); font-size: 13px; font-weight: 600;">
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label
+                                style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Description</label>
+                            <textarea id="report-form-description" readonly rows="5"
+                                style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-tertiary); color: var(--text-secondary); font-size: 13px; resize: none;"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Manual Input fields (only shown for non-template legacy reports) -->
+                    <div id="manual-report-fields" style="display: none; flex-direction: column; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Report
+                                Name</label>
+                            <input type="text" id="manual-form-name" placeholder="e.g. Hemoglobin Test"
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Report Short
+                                Name</label>
+                            <input type="text" id="manual-form-shortname" placeholder="e.g. Hb"
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label
+                                style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Status</label>
+                            <select id="report-form-status"
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a; cursor: pointer;">
+                                <option value="Normal">Normal</option>
+                                <option value="High">High</option>
+                                <option value="Low">Low</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Parameters Input Section -->
+                    <div id="report-parameters-section"
+                        style="display: none; flex-direction: column; gap: 12px; border-top: 1px dashed var(--border-color); padding-top: 15px;">
+                        <h4
+                            style="font-family: var(--font-display); font-weight: 700; font-size: 14px; color: var(--text-primary); margin: 0 0 4px 0;">
+                            Test Parameters Results</h4>
+
+                        <!-- Column Header Row -->
+                        <div
+                            style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 0 12px;">
+                            <span
+                                style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Parameter</span>
+                            <span
+                                style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Unit</span>
+                            <span
+                                style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Normal
+                                Range</span>
+                            <span
+                                style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Result</span>
+                        </div>
+
+                        <div id="report-parameters-container" style="display: flex; flex-direction: column; gap: 12px;">
+                            <!-- Parameter rows rendered here dynamically -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary"
+                        style="margin-top: 10px; width: 100%; flex-shrink: 0;">Save Report</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Bookings Tab (Appointments) -->
+        <div id="tab-bookings" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px; margin-bottom: 24px;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px;">
+                    <div>
+                        <span class="widget-title">My Appointments</span>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-top: 6px;">Manage your doctor
+                            consultation visits and appointments.</p>
+                    </div>
+                    <button class="btn-primary" onclick="openBookAppointmentModal()"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; font-size: 14px; height: 46px; background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); border-color: var(--color-primary); box-shadow: none;">+
+                        Book New Appointment</button>
+                </div>
+                <div style="display: flex; gap: 12px; width: 100%; align-items: center;">
+                    <input type="text" id="search-appointment-input"
+                        onkeypress="if(event.key === 'Enter') filterAppointments()"
+                        placeholder="Search doctor name, reason, specialty..."
+                        style="flex: 1; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 14px; outline: none; background: #ffffff; color: #0f172a; height: 46px;">
+                    <button onclick="filterAppointments()" class="btn-primary"
+                        style="border-radius: 8px; padding: 12px 24px; font-weight: bold; cursor: pointer; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); border: none; height: 46px;">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"
+                            viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+            <div class="card" style="padding: 24px;">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr style="background: var(--bg-tertiary);">
+                                <th style="padding: 12px 16px; text-align: left;">Appointment ID</th>
+                                <th style="padding: 12px 16px; text-align: left;">Doctor Name</th>
+                                <th style="padding: 12px 16px; text-align: left;">Reason</th>
+                                <th style="padding: 12px 16px; text-align: left;">Appointment Date & Time</th>
+                                <th style="padding: 12px 16px; text-align: center;">Status</th>
+                                <th style="padding: 12px 16px; text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointments-tbody">
+                            <!-- Appointments mapped dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cart Tab -->
+        <div id="tab-cart" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px;">
+                <span class="widget-title">My Shopping Cart</span>
+                <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px; margin-bottom: 15px;">Review
+                    items in your cart and proceed to checkout</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr style="background: var(--bg-tertiary);">
+                                <th style="padding: 12px 16px; text-align: left;">Medicine</th>
+                                <th style="padding: 12px 16px; text-align: left;">Manufacturer</th>
+                                <th style="padding: 12px 16px; text-align: center;">Type</th>
+                                <th style="padding: 12px 16px; text-align: center;">Qty</th>
+                                <th style="padding: 12px 16px; text-align: left;">Price</th>
+                                <th style="padding: 12px 16px; text-align: center;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart-tbody">
+                            <!-- Cart items mapped dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                    <div style="font-size: 16px; font-weight: 700; color: var(--text-primary);">
+                        Total Price: <span id="cart-total-price">₹0</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <select id="checkout-delivery-method"
+                            style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; font-weight: 600; outline: none; background: white; color: var(--text-primary); cursor: pointer; box-shadow: var(--glass-shadow);">
+                            <option value="pickup">Store Pickup</option>
+                            <option value="delivery">Home Delivery</option>
+                        </select>
+                        <button class="btn-primary" onclick="checkoutCart()" style="padding: 10px 24px;">Checkout &
+                            Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="tab-orders" class="tab-content" style="display: none;">
+            <div class="card" style="padding: 24px;">
+                <span class="widget-title">Medicine Order History</span>
+                <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px; margin-bottom: 15px;">Track
+                    status of your orders placed from the Medicines catalog</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr style="background: var(--bg-tertiary);">
+                                <th style="padding: 12px 16px;">Order ID</th>
+                                <th style="padding: 12px 16px;">Medicine</th>
+                                <th style="padding: 12px 16px; text-align: center;">Qty</th>
+                                <th style="padding: 12px 16px;">Price</th>
+                                <th style="padding: 12px 16px;">Order Date</th>
+                                <th style="padding: 12px 16px;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-tbody">
+                            <!-- Orders mapped dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical History Tab (Records) -->
+        <div id="tab-records" class="tab-content" style="display: none;">
+            <div style="display: flex; flex-direction: column; gap: 24px;">
+                <!-- Appointments History -->
+                <div class="card" style="padding: 24px;">
+                    <span class="widget-title">Consultation History</span>
+                    <div class="table-container" style="margin-top: 15px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Provider</th>
+                                    <th>Specialty</th>
+                                    <th>Schedule</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-appts-tbody">
+                                <!-- Consultation logs -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Orders History -->
+                <div class="card" style="padding: 24px;">
+                    <span class="widget-title">Purchased Medicines</span>
+                    <div class="table-container" style="margin-top: 15px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Details</th>
+                                    <th>Placed Date</th>
+                                    <th>Total Cost</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-orders-tbody">
+                                <!-- Medicine purchase history -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Saved Reports History -->
+                <div class="card" style="padding: 24px;">
+                    <span class="widget-title">Saved Lab Reports</span>
+                    <div class="table-container" style="margin-top: 15px;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th style="padding: 10px 12px; text-align: left;">ID</th>
+                                    <th style="padding: 10px 12px; text-align: left;">Report Name</th>
+                                    <th style="padding: 10px 12px; text-align: left;">Short Name</th>
+                                    <th style="padding: 10px 12px; text-align: center;">Status</th>
+                                    <th style="padding: 10px 12px; text-align: left;">Report Date</th>
+                                    <th style="padding: 10px 12px; text-align: center;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-reports-tbody">
+                                <!-- Lab report history -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="tab-profile" class="tab-content" style="display: none;">
+            <div
+                style="background: var(--bg-glass); border: var(--glass-border); border-radius: 16px; padding: 24px; box-shadow: var(--glass-shadow); text-align: left;">
+                <h2
+                    style="font-family: var(--font-display); font-weight: 700; margin-bottom: 20px; color: var(--text-primary); border-bottom: 2px solid var(--color-primary-glow); padding-bottom: 10px;">
+                    Citizen Profile Settings</h2>
+
+                <form id="profileSettingsForm" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Full
+                                Name</label>
+                            <input type="text" id="set_name" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Mobile
+                                Number</label>
+                            <input type="text" id="set_mobile" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Email
+                                Address</label>
+                            <input type="email" id="set_email" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Age</label>
+                                <input type="number" id="set_age" required min="1" max="120"
+                                    style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 6px;">
+                                <label
+                                    style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Gender</label>
+                                <select id="set_gender" required
+                                    style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a; cursor: pointer;">
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <label style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Home
+                            Address</label>
+                        <input type="text" id="set_address" required
+                            style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">City</label>
+                            <input type="text" id="set_city" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label
+                                style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">State</label>
+                            <input type="text" id="set_state" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            <label
+                                style="font-size: 13px; font-weight: 700; color: var(--text-secondary);">Pincode</label>
+                            <input type="text" id="set_pincode" required pattern="\d{6}" maxlength="6"
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; background: #ffffff; color: #0f172a;">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary"
+                        style="margin-top: 10px; width: 100%; height: 42px; font-size: 14px;">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- First Time Profile Completion Modal -->
+    <div id="profileModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div
+            style="background: white; width: 100%; max-width: 650px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease;">
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h3
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    Complete Citizen Profile</h3>
+                <span id="closeModalBtn"
+                    style="cursor: pointer; font-weight: bold; font-size: 20px; display: none; color: #ffffff;"
+                    onclick="closeProfileModal()">✕</span>
+            </div>
+
+            <form id="profileForm" style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 5px;">
+                    Please fill out the details below to complete your citizen profile. Once completed, your details
+                    will be saved for consultations and medical records.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">Street Address</label>
+                        <input type="text" id="addressInput" required placeholder="e.g. 102, Shanti Kutir"
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">City</label>
+                        <input type="text" id="cityInput" required placeholder="e.g. Ahmedabad"
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">State</label>
+                        <input type="text" id="stateInput" required placeholder="e.g. Gujarat"
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">Pincode</label>
+                        <input type="text" id="pincodeInput" required pattern="\d{6}" maxlength="6"
+                            placeholder="e.g. 380015"
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff;">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">Age</label>
+                        <input type="number" id="ageInput" required min="1" max="120" placeholder="e.g. 28"
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff;">
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 11px; font-weight: 700; color: #475569;">Gender</label>
+                        <select id="genderInput" required
+                            style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 13px; color: #0f172a; background: #ffffff; cursor: pointer;">
+                            <option value="" disabled selected>Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    style="margin-top: 10px; width: 100%; height: 42px; font-size: 14px;">Complete & Save
+                    Profile</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Medicine Info Modal -->
+    <div id="medDetailModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div class="modal-scroll"
+            style="background: white; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow-x: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease; max-height: 90vh; overflow-y: auto;">
+            <!-- Medicine Image -->
+            <div style="width: 100%; height: 200px; overflow: hidden; background-color: #f1f5f9; position: relative;">
+                <img id="med-detail-image" src="" alt="Medicine" style="width: 100%; height: 100%; object-fit: cover;">
+                <span
+                    style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff; position: absolute; top: 12px; right: 16px; background: rgba(0,0,0,0.4); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                    onclick="closeMedDetailModal()">✕</span>
+            </div>
+            <!-- Header -->
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 16px 24px;">
+                <h3 id="med-detail-name"
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    Medicine Info</h3>
+                <span id="med-detail-manufacturer"
+                    style="font-size: 12px; opacity: 0.85; display: block; margin-top: 2px;"></span>
+            </div>
+            <div
+                style="padding: 24px; display: flex; flex-direction: column; gap: 15px; font-size: 14px; line-height: 1.5;">
+                <!-- Price & Stock Row -->
+                <div style="display: flex; gap: 12px;">
+                    <div
+                        style="flex: 1; background: linear-gradient(135deg, rgba(34, 197, 94, 0.08), rgba(34, 197, 94, 0.03)); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 10px; padding: 12px; text-align: center;">
+                        <label
+                            style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block;">Price</label>
+                        <div id="med-detail-price"
+                            style="font-size: 20px; font-weight: 800; color: var(--color-primary); margin-top: 4px;">₹0
+                        </div>
+                    </div>
+                    <div
+                        style="flex: 1; background: linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(59, 130, 246, 0.03)); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 10px; padding: 12px; text-align: center;">
+                        <label
+                            style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; display: block;">Stock</label>
+                        <div id="med-detail-stock"
+                            style="font-size: 20px; font-weight: 800; color: #22c55e; margin-top: 4px;">0</div>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Category</label>
+                        <div id="med-detail-category" style="font-weight: 600; color: var(--text-primary);"></div>
+                    </div>
+                    <div>
+                        <label
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Pack
+                            Size</label>
+                        <div id="med-detail-pack" style="font-weight: 600; color: var(--text-primary);"></div>
+                    </div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Uses
+                        / Indications</label>
+                    <div id="med-detail-uses" style="color: var(--text-secondary);"></div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Possible
+                        Side Effects</label>
+                    <div id="med-detail-sideeffects" style="color: var(--text-secondary);"></div>
+                </div>
+                <!-- Seller / Pharmacy Info -->
+                <div>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Available
+                        At (Seller)</label>
+                    <div id="med-detail-seller"
+                        style="margin-top: 6px; background: var(--bg-tertiary); border-radius: 8px; padding: 10px 14px; color: var(--text-secondary); font-size: 13px;">
+                        No seller information available
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Info Modal -->
+    <div id="diseaseDetailModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div
+            style="background: white; width: 100%; max-width: 600px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease;">
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h3 id="dis-detail-name"
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    Disease Profile</h3>
+                <span style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff;"
+                    onclick="closeDiseaseDetailModal()">✕</span>
+            </div>
+            <div
+                style="padding: 24px; display: flex; flex-direction: column; gap: 15px; font-size: 13px; line-height: 1.5; max-height: 75vh; overflow-y: auto;">
+                <div>
+                    <label
+                        style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Description</label>
+                    <div id="dis-detail-desc" style="color: var(--text-secondary);"></div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Causes
+                        & Pathogenesis</label>
+                    <div id="dis-detail-causes" style="color: var(--text-secondary);"></div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Common
+                        Symptoms</label>
+                    <div id="dis-detail-symptoms" style="color: var(--text-secondary);"></div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div>
+                        <label
+                            style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Risk
+                            Factors</label>
+                        <div id="dis-detail-risk" style="color: var(--text-secondary);"></div>
+                    </div>
+                    <div>
+                        <label
+                            style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Complications</label>
+                        <div id="dis-detail-complications" style="color: var(--text-secondary);"></div>
+                    </div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Standard
+                        Treatment Protocol</label>
+                    <div id="dis-detail-treatment" style="color: var(--text-secondary);"></div>
+                </div>
+                <div>
+                    <label
+                        style="font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Indicated
+                        Medicine</label>
+                    <div id="dis-detail-medicine" style="color: var(--text-primary); font-weight: 600;"></div>
+                </div>
+                <div
+                    style="display: flex; gap: 12px; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px;">
+                    <button type="button" onclick="viewDiseaseMedicine()" class="btn-primary"
+                        style="flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: none;">View
+                        Medicine</button>
+                    <button type="button" onclick="findDiseaseDoctor()" class="btn-primary"
+                        style="flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-color: #10b981; box-shadow: none;">Find
+                        Doctor</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Report Modal -->
+    <div id="viewReportModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div
+            style="background: white; width: 100%; max-width: 520px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease; display: flex; flex-direction: column; max-height: 90vh;">
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                <h3
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    View Lab Report</h3>
+                <span style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff;"
+                    onclick="closeViewReportModal()">✕</span>
+            </div>
+            <div
+                style="padding: 24px; display: flex; flex-direction: column; gap: 16px; font-size: 13px; overflow-y: auto; flex-grow: 1;">
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label
+                        style="font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 10px;">Report
+                        Name</label>
+                    <div id="view-report-name" style="font-size: 15px; font-weight: 600; color: var(--text-primary);">
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label
+                        style="font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 10px;">Report
+                        Short Name</label>
+                    <div id="view-report-shortname"
+                        style="font-size: 14px; font-weight: 600; color: var(--text-primary);"></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label
+                        style="font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 10px;">Status</label>
+                    <div>
+                        <span id="view-report-status-badge" class="status-badge"
+                            style="font-size: 11px; padding: 4px 8px; border-radius: 6px;"></span>
+                    </div>
+                </div>
+
+                <!-- Dynamic view parameters results -->
+                <div id="view-report-parameters-section"
+                    style="display: none; flex-direction: column; gap: 8px; border-top: 1px dashed var(--border-color); padding-top: 15px;">
+                    <label
+                        style="font-weight: 700; color: var(--text-muted); text-transform: uppercase; font-size: 10px; margin-bottom: 4px;">Test
+                        Parameters Results</label>
+
+                    <!-- Column Header Row -->
+                    <div
+                        style="display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 12px; align-items: center; padding: 0 12px; margin-bottom: 2px;">
+                        <span
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Parameter</span>
+                        <span
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Unit</span>
+                        <span
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: center;">Normal
+                            Range</span>
+                        <span
+                            style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; text-align: right; padding-right: 6px;">Your
+                            Value</span>
+                    </div>
+
+                    <div id="view-report-parameters-container" style="display: flex; flex-direction: column; gap: 8px;">
+                    </div>
+                </div>
+
+                <button type="button" onclick="closeViewReportModal()" class="btn-primary"
+                    style="margin-top: 10px; width: 100%; background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; border: none; box-shadow: none; flex-shrink: 0; cursor: pointer; font-weight: 700; height: 40px; border-radius: 8px;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Place Order Modal -->
+    <div id="orderModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div
+            style="background: white; width: 100%; max-width: 480px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease;">
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center;">
+                <h3
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    Add to Cart</h3>
+                <span style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff;"
+                    onclick="closeOrderModal()">✕</span>
+            </div>
+            <form onsubmit="submitOrder(event)"
+                style="padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+                <input type="hidden" id="order-med-id">
+                <div>
+                    <span id="order-med-name"
+                        style="font-size: 18px; font-weight: 700; color: var(--text-primary); display: block;"></span>
+                    <span id="order-med-manufacturer"
+                        style="font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; display: block; margin-top: 2px;"></span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px;">
+                    <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Select
+                        Quantity</label>
+                    <input type="number" id="order-qty" min="1" max="20" required
+                        style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px;">
+                </div>
+                <div style="margin-top: 4px; font-size: 13px; font-weight: 700; color: var(--text-primary);">
+                    Total Price: <span id="order-popup-total-price"
+                        style="color: var(--color-primary); font-size: 14px;">₹75</span>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 8px;">
+                    <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Order Type</label>
+                    <select id="order-type" required
+                        style="padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; background: white; color: #0f172a; cursor: pointer;">
+                        <option value="Normal">Normal</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+                <div
+                    style="background-color: var(--bg-tertiary); border-radius: 8px; padding: 12px; margin-top: 10px; font-size: 13px; color: var(--text-secondary);">
+                    💡 <strong style="color: var(--text-primary);">Cart Info:</strong> Medicines are fulfilled by local
+                    registered pharmacies and delivered within 24 hours. COD option is available at checkout.
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 10px; width: 100%;">Add to Cart</button>
+            </form>
+        </div>
+    </div>
+    <!-- Add/Edit Appointment Modal -->
+    <div id="appointmentModal"
+        style="position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px;">
+        <div
+            style="background: white; width: 100%; max-width: 780px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.25); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); animation: modalFadeIn 0.3s ease; display: flex; flex-direction: column; max-height: 90vh;">
+            <div
+                style="background: linear-gradient(135deg, var(--color-primary) 0%, #3b82f6 100%); color: white; padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                <h3 id="appointment-modal-title"
+                    style="font-family: var(--font-display); font-weight: 700; margin: 0; font-size: 18px; color: #ffffff;">
+                    Book New Appointment</h3>
+                <span style="cursor: pointer; font-weight: bold; font-size: 20px; color: #ffffff;"
+                    onclick="closeAppointmentModal()">✕</span>
+            </div>
+
+            <!-- Step 1: Select Doctor -->
+            <div id="booking-step-1"
+                style="padding: 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; flex-grow: 1;">
+                <div
+                    style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 10px; padding: 12px 16px;">
+                    <span style="font-size: 13px; font-weight: 700; color: #2563eb; display: block;">📍 Filtered by Your
+                        Location</span>
+                    <p id="booking-pincode-info"
+                        style="color: var(--text-secondary); font-size: 12px; margin-top: 4px; margin-bottom: 0;">
+                        Showing available doctors in your pincode area.</p>
+                </div>
+                
+                <div style="background: var(--bg-secondary); padding: 14px; border-radius: 8px; border: 1px solid var(--border-color); margin-top: 4px;">
+                    <label style="font-size: 11px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 8px;">🕒 Select Your Desired Appointment Time Range</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
+                        <div style="display: flex; flex-direction: column; gap: 3px;">
+                            <label style="font-size: 10px; font-weight: 600; color: var(--text-muted);">From Time</label>
+                            <input type="time" id="filter-booking-from" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; outline: none; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 3px;">
+                            <label style="font-size: 10px; font-weight: 600; color: var(--text-muted);">To Time</label>
+                            <input type="time" id="filter-booking-to" style="padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 12px; outline: none; background: #ffffff; color: #0f172a;">
+                        </div>
+                        <button type="button" onclick="filterDoctorsByDesiredTime()" class="btn-primary"
+                            style="padding: 8px 16px; font-size: 12px; font-weight: 700; border-radius: 6px; height: 38px; cursor: pointer; border: none; white-space: nowrap;">
+                            🔍 Find Doctors
+                        </button>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-muted); margin: 6px 0 0 0;">Doctors whose availability slot overlaps your time range will be selectable.</p>
+                </div>
+
+                <div id="booking-doctors-list"
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 8px;">
+                    <!-- Doctor Cards will be populated here dynamically -->
+                </div>
+            </div>
+
+            <!-- Step 2: Appointment Details -->
+            <div id="booking-step-2"
+                style="padding: 24px; display: none; flex-direction: column; gap: 16px; overflow-y: auto; flex-grow: 1;">
+                <button type="button" onclick="backToDoctorSelection()"
+                    style="align-self: flex-start; background: none; border: none; color: #2563eb; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; padding: 0;">
+                    ← Back to Doctors
+                </button>
+                <div id="selected-doctor-summary"
+                    style="background: var(--bg-tertiary); border: 1px solid var(--border-color); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+                    <!-- Doctor summary populated dynamically -->
+                </div>
+                <form id="appointmentForm" onsubmit="submitAppointmentForm(event)"
+                    style="display: flex; flex-direction: column; gap: 16px; margin-top: 8px;">
+                    <input type="hidden" id="appointment-form-id">
+                    <input type="hidden" id="appointment-form-doctor-id">
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Reason for
+                            Appointment</label>
+                        <textarea id="appointment-form-reason" required rows="3"
+                            placeholder="e.g. Regular heart checkup, seasonal flu symptoms..."
+                            style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; outline: none; resize: none;"></textarea>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Appointment
+                                Date</label>
+                            <input type="date" id="appointment-form-date" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; outline: none;">
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <label style="font-size: 12px; font-weight: 700; color: var(--text-secondary);">Appointment
+                                Time</label>
+                            <select id="appointment-form-time" required
+                                style="padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 13px; outline: none; background: #ffffff; color: #0f172a;"></select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary"
+                        style="margin-top: 10px; width: 100%; height: 44px; font-weight: 700; border-radius: 8px;">Confirm
+                        Booking</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'citizens/dashboard.js' %}?v=1.1.37"></script>
+</body>
+
+</html>
