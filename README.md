@@ -5,7 +5,6 @@
 [![Django](https://img.shields.io/badge/Backend-Python%203%20%7C%20Django-092E20?logo=django&logoColor=white)](https://www.djangoproject.com/)
 [![SQLite](https://img.shields.io/badge/Database-SQLite3%20(WAL%20Mode)-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > A modern, full-stack healthcare management portal engineered to seamlessly connect **Patients, Doctors, Pharmacies, Diagnostic Clinics, and Administrators** into one unified, secure, and real-time digital ecosystem.
 
@@ -26,7 +25,6 @@
   - [Running the Application](#running-the-application)
 - [Security & Authentication](#-security--authentication)
 - [Contributors](#-contributors)
-- [License](#-license)
 
 ---
 
@@ -257,9 +255,3 @@ python manage.py runserver 8000
 
 - **Vasu Miyani** ([@vasumiyani01](https://github.com/vasumiyani01)) — Full-Stack Architecture & Module Design
 - **Mayank Rojesara** ([@mayank122340](https://github.com/mayank122340)) — Full-Stack Development, APIs & Cloud Integration
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — feel free to customize and extend for your collegiate or commercial applications.
